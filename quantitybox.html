@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> </title>
+ 
+</head>
+<body id="homepage">
+ 
+
+<style>
+button.qty_btn {
+border: #ddd 1px solid;
+background: #eee;
+padding: 0;
+font-size: 20px;
+height: 34px;
+width: 34px;
+text-align: center;
+vertical-align: middle;
+cursor: pointer;
+}
+button.qty_btn:hover {
+background: #ddd;
+}
+input.qty_input {
+border: #ddd 1px solid;
+padding: 0 10px;
+max-width: 80px;
+text-align: center;
+height: 34px;
+vertical-align: middle;
+}
+.product_qty {
+margin-bottom: 20px;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+input[type=number] {
+-moz-appearance: textfield;
+}
+
+
+</style>
+
+
+
+
+<div class="product_qty quantity ">
+<button class="qty_btn plus">+</button>
+<input type="number" step="1" name="quantity" value="1" title="Qty" class="qty_input qty text"  >
+<button class="qty_btn minus">-</button>  
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+
+
+jQuery(document).ready(function($) {
+$(document).on( 'click', '.plus, .minus', function() {
+  // Get values
+  var $qty        = $(this).closest('.quantity').find(".qty");
+  var currentVal  = parseFloat( $qty.val() );
+  var max         = parseFloat( $qty.attr('max') );
+  var min         = parseFloat( $qty.attr('min') );
+  var step        = $qty.attr('step');
+
+  // Format values
+  if ( ! currentVal || currentVal == "" || currentVal == "NaN" ) currentVal = 1;
+  if ( max == "" || max == "NaN" ) max = 10;
+  if ( min == "" || min == "NaN" ) min = 1;
+  if ( step == 'any' || step == "" || step == undefined || parseFloat( step ) == "NaN" ) step = 1;
+
+  // Change the value
+      if ( $(this).is('.plus') ) {
+          if ( max && ( max == currentVal || currentVal > max ) ) {
+          $qty.val( max );
+          } else if ( currentVal < 10 ){
+          $qty.val( currentVal + parseFloat( step ) );
+          }
+      } 
+      else {
+
+        if ( min && ( min==currentVal || currentVal < min ) ) {
+        $qty.val( min );
+        } 
+        else if ( currentVal > 1 ) {
+        $qty.val( currentVal - parseFloat( step ) );
+        }
+
+      }
+
+  // Trigger change event
+  $qty.trigger('change');
+});
+
+
+});
+jQuery("input[name='quantity']").on("keyup change", function() {
+    if ($(this).val()  > 10) {
+     $(this).val('10');
+    }
+    else if($(this).val() == 0) {
+     $(this).val('1');
+    }
+});
+
+</script>
+</html>
